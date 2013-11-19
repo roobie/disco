@@ -1,0 +1,3 @@
+[submodule "nimrod/seal_of_ardour/nimgame"]
+	path = nimrod/seal_of_ardour/nimgame
+	url = https://github.com/roobie/nimgame.git
