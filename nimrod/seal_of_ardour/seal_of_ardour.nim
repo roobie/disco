@@ -1,4 +1,5 @@
-import entities
+import
+  entities, nimgame/lib/engine
     
 const main_menu_options = {"1": "Start an adventure", "2": "Exit"}
 
@@ -64,8 +65,14 @@ proc handle_main_menu_choice(c:string) =
     quit()
 
 proc main() =
-  welcome_message()
-  var choice = show_main_menu()
-  handle_main_menu_choice(choice)
+  #welcome_message()
+  #var choice = show_main_menu()
+  #handle_main_menu_choice(choice)
+  
+  #var sfc = new_surface(100, 100, false)
+  
+  var engine = new_engine()
+  #engine.run = true
+  start(engine)
   
 main()
