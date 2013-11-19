@@ -5,6 +5,8 @@ VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Disco.FSharp.CLI", "Disco.FSharp.CLI\Disco.FSharp.CLI.fsproj", "{D6A4A716-E5E5-49E5-92EF-30946B9D82B4}"
 EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Disco.FSharp", "Disco.FSharp\Disco.FSharp.fsproj", "{41AD3F97-37DB-48EA-A7C3-E8155773849E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{D6A4A716-E5E5-49E5-92EF-30946B9D82B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D6A4A716-E5E5-49E5-92EF-30946B9D82B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D6A4A716-E5E5-49E5-92EF-30946B9D82B4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{41AD3F97-37DB-48EA-A7C3-E8155773849E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{41AD3F97-37DB-48EA-A7C3-E8155773849E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{41AD3F97-37DB-48EA-A7C3-E8155773849E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{41AD3F97-37DB-48EA-A7C3-E8155773849E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
