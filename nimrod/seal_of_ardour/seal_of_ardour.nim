@@ -7,8 +7,8 @@ proc main() =
   let game_state = new_state()
   
   #let surf = new_surface(16, 16)
-  #let img = new_image("pc.png")
-  let ent = new_entity(graphic = nil)
+  let img = new_image("Cowsheet.png")
+  let ent = new_entity(graphic = img)
   game_state.add(ent)
   
   let engine = new_engine(title = "Seal of Ardour",
