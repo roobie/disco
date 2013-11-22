@@ -29,6 +29,21 @@
     };
   };
 
+  twod.inverseAngle = function(theta) {
+    if (theta < 0) {
+      return theta + Math.PI;
+    }
+    return theta - Math.PI;
+  };
+
+  twod.angleToRatio = function(theta) {
+    var tan = Math.tan(theta), cos = Math.cos(theta), sin = Math.sin(theta);
+    var ratio = [
+      sin / tan,
+      tan * cos
+    ];
+  };
+
   twod.rect = {};
 
   twod.rect.overlaps = function(x1, y1, w1, h1, x2, y2, w2, h2) {
