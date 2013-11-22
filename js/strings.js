@@ -21,14 +21,14 @@ var formatString = function format(template, data) {
     /// });
 
     // ==== BEGIN var section =================================================
-    var 
+    var
         // the interpolation symbol:
         interpolationSymbol = "%",
-        
+
         // This regex checks if template contains any matches that are similar to:
         // %user.toString or %3.toLocaleString
         extCheckRe = new RegExp(interpolationSymbol + "([A-Za-z0-9]+)[\.]{1}([A-Za-z]+)", "g"),
-        
+
         // function names:
         checkIsExtended, foreach, isNothing, getRe, getValue;
     // ==== END var section ===================================================
@@ -90,7 +90,7 @@ var formatString = function format(template, data) {
 
     return (function main() {
         var result = template;
-        
+
         if (checkIsExtended()) {
             (function () {
                 var koi, prop, match;
