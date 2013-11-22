@@ -31,8 +31,8 @@
   };
 
   var getWeek = function (mom) {
-    var m = new moment(mom);
-    var firstDayInWeek = getFirstDayInWeek(m);
+    //var m = new moment(mom);
+    var firstDayInWeek = getFirstDayInWeek(mom);
     var result = [];
 
     for (var i = 0, max = 7; i < max; i++) {
@@ -52,11 +52,10 @@
   };
 
   var getMonth = function (mom) {
-    var m = new moment(mom);
-    var firstDayOfMonth = getFirstDayOfMonth(m);
+    var firstDayOfMonth = getFirstDayOfMonth(mom);
     var result = [];
 
-    for (var i = 0, max = m.daysInMonth(); i < max; i++) {
+    for (var i = 0, max = mom.daysInMonth(); i < max; i++) {
       result.push(new moment(firstDayOfMonth).add('days', i));
     }
     return result;
@@ -66,7 +65,7 @@
     var firstWeekInMonth = getFirstWeekInMonth(mom);
     var firstDayInFirstWeekInMonth = firstWeekInMonth[0];
     var moreThanFourWeeks = mom.daysInMonth() / 7 > 4;
-    var result = fwim;
+    var result = firstWeekInMonth;
     var nextWeek;
     for (var i = 0, maxi = moreThanFourWeeks ? 4 : 3; i < maxi; i++) {
       nextWeek = getNextWeek(result.slice(-1)[0]);
