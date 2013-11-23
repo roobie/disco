@@ -4,6 +4,15 @@
   var module = {},
       twod;
 
+  module.Ratio = function Ratio(a, b) {
+    this.a = a;
+    this.b = b;
+  };
+
+  module.Ratio.prototype.valueOf = function() {
+    return a / b;
+  };
+
   twod = module.twod = {};
 
   twod.Point = function Point(x, y) {
@@ -38,10 +47,12 @@
 
   twod.angleToRatio = function(theta) {
     var tan = Math.tan(theta), cos = Math.cos(theta), sin = Math.sin(theta);
-    var ratio = [
+    /*var ratio = [
       sin / tan,
       tan * cos
-    ];
+    ];*/
+
+    return new Ratio(new Ratio(sin, tan), tan * cos);
   };
 
   twod.rect = {};
