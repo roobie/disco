@@ -32,9 +32,12 @@
   };
 
   twod.vector = function vector(point1, point2) {
+    var b = twod.bearing(point1, point2);
     return {
       magnitude: twod.distance(point1, point2),
-      bearing: twod.bearing(point1, point2)
+      bearing: b,
+      ratio: twod.angleToRatio(b),
+      inverseBearing: twod.inverseAngle(b)
     };
   };
 
@@ -52,7 +55,7 @@
       tan * cos
     ];*/
 
-    return new Ratio(new Ratio(sin, tan), tan * cos);
+    return new module.Ratio(sin / tan, tan * cos);
   };
 
   twod.rect = {};
