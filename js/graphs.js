@@ -11,13 +11,13 @@
     { title: "Test One" },
     { title: "Test One" },
     { title: "Test One" },
-    /*{ title: "Test One" },
     { title: "Test One" },
     { title: "Test One" },
     { title: "Test One" },
     { title: "Test One" },
     { title: "Test One" },
-    { title: "Test One" },*/
+    { title: "Test One" },
+    { title: "Test One" },
   ];
 
   var stage = new Kinetic.Stage({
@@ -30,7 +30,7 @@
   var layer = new Kinetic.Layer();
   stage.add(layer);
 
-  var shapes = _.map(data, function(item) {
+  var mainGroups = _.map(data, function(item) {
     var grpDim = {
       w: 40,
       h: 40
@@ -77,27 +77,60 @@
     grp.relationToSiblings = function() {
       var i, g, result = [], thisPoint = new geom.twod.Point(this.getX(), this.getY());
       for (i = 0; i < amaxi; i++) {
-        g = shapes[i];
+        g = mainGroups[i];
         if (g === this) { continue; }
-        result.push(geom.twod.vector(
-          thisPoint,
-          new geom.twod.Point(g.getX(), g.getY())
-        ));
+        result.push({
+          node: g,
+          vector: geom.twod.vector(
+            thisPoint,
+            new geom.twod.Point(g.getX(), g.getY())
+          )
+        });
       }
-      return _.sortBy(result, "magnitude");
+      return _.sortBy(result, function(sib) {
+        return sib.vector.magnitude;
+      });
     };
 
     grp.add(rect);
 
-    grp.on("dragend", function(event) {
+    /*grp.on("dragend", function(event) {
       var r = grp.relationToSiblings();
       console.log(r);
-    });
+    });*/
 
     return grp;
   });
 
-  var amaxi = shapes.length;
+  var lines = _.map(mainGroups, function(grp) {
+    var line = new Kinetic.Line({
+      points: [
+        grp.getWidth() / 2, grp.getHeight() / 2,
+        100, 100
+      ],
+      stroke: "black",
+      strokeWidth: 2
+    });
+
+    grp.add(line);
+    line.from = grp;
+
+    return line;
+  });
+
+  var updateLines = function() {
+    _.each(lines, function(line) {
+      var grp = line.getParent();
+      var nearest = grp.relationToSiblings()[0].node;
+
+      line.setPoints([
+        grp.getWidth() / 2, grp.getHeight() / 2,
+        nearest.getX() - grp.getX() + nearest.getWidth() / 2, nearest.getY() - grp.getY() + nearest.getHeight() / 2
+      ])
+    });
+  };
+
+  var amaxi = mainGroups.length;
   var speed = {
     max: 20,
     min: 1
@@ -112,7 +145,7 @@
     var i, g, rels, td = frame.timeDiff, tds = td / 1000;
 
     for(i = 0; i < amaxi; i++) {
-      g = shapes[i];
+      g = mainGroups[i];
       if(g.isCollidingAny()) {
         rels = g.relationToSiblings();
         
@@ -120,6 +153,8 @@
 
       }
     }
+
+    updateLines();
 
   }, layer);
   anim.start();

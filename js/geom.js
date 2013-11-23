@@ -4,13 +4,13 @@
   var module = {},
       twod;
 
-  module.Ratio = function Ratio(a, b) {
-    this.a = a;
-    this.b = b;
+  module.Ratio = function Ratio(y, x) {
+    this.y = y;
+    this.x = x;
   };
 
   module.Ratio.prototype.valueOf = function() {
-    return a / b;
+    return this.y / this.x;
   };
 
   twod = module.twod = {};
@@ -53,6 +53,9 @@
     /*var ratio = [
       sin / tan,
       tan * cos
+
+      tan A = sin A / cos A
+
     ];*/
 
     return new module.Ratio(sin / tan, tan * cos);
