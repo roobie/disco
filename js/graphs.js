@@ -22,8 +22,8 @@
 
   var stage = new Kinetic.Stage({
     draggable: true,
-    width: 1000,
-    height: 400,
+    width: 780,
+    height: 600,
     container: "content"
   });
 
@@ -37,8 +37,8 @@
     };
 
     var grp = new Kinetic.Group({
-      x: r() * 150,
-      y: r() * 150,
+      x: stage.getWidth() / 2 + r() * 50,
+      y: stage.getHeight() / 2 + r() * 50,
       width: grpDim.w,
       height: grpDim.h,
       draggable: true
@@ -94,10 +94,8 @@
 
     grp.add(rect);
 
-    /*grp.on("dragend", function(event) {
-      var r = grp.relationToSiblings();
-      console.log(r);
-    });*/
+    grp.on("dragend", function(event) {
+    });
 
     return grp;
   });
@@ -108,14 +106,29 @@
         grp.getWidth() / 2, grp.getHeight() / 2,
         100, 100
       ],
-      stroke: "black",
-      strokeWidth: 2
+      stroke: "cadetblue",
+      strokeWidth: 4
     });
 
     grp.add(line);
     line.from = grp;
 
     return line;
+  });
+
+  var lines2 = _.map(mainGroups, function(grp) {
+    var line2 = new Kinetic.Line({
+      points: [
+        grp.getWidth() / 2, grp.getHeight() / 2,
+      ],
+      stroke: "chartreuse",
+      strokeWidth: 4
+    });
+
+    grp.add(line2);
+    line2.from = grp;
+
+    return line2;
   });
 
   var updateLines = function() {
@@ -126,7 +139,23 @@
       line.setPoints([
         grp.getWidth() / 2, grp.getHeight() / 2,
         nearest.getX() - grp.getX() + nearest.getWidth() / 2, nearest.getY() - grp.getY() + nearest.getHeight() / 2
-      ])
+      ]);
+    });
+
+    _.each(lines2, function(line2) {
+      var grp = line2.getParent();
+      var nearestData = grp.relationToSiblings()[0];
+      var nearest = nearestData.node;
+      var vec = nearestData.vector;
+      var bearing = vec.bearing;
+      var rejection = Math.pow(vec.magnitude * 0.0005, -1);
+      //var inverseAngleRatio = geom.twod.angleToRatio(nearestData.vector.inverseBearing)
+
+      line2.setPoints([
+        grp.getWidth() / 2, grp.getHeight() / 2,
+        //50 * inverseAngleRatio.x, 50 * inverseAngleRatio.y
+        grp.getWidth() / 2 + -1 * Math.cos(bearing) * rejection, grp.getHeight() / 2 + -1 * Math.sin(nearestData.vector.bearing) * rejection
+      ]);
     });
   };
 
@@ -142,19 +171,27 @@
   };
 
   var anim = new Kinetic.Animation(function(frame) {
-    var i, g, rels, td = frame.timeDiff, tds = td / 1000;
+    var i, g, rels, nearest, force, td = frame.timeDiff, tds = td / 1000;
 
     for(i = 0; i < amaxi; i++) {
       g = mainGroups[i];
+
+      rels = g.relationToSiblings();
+      nearest = rels[0];
+      force = Math.pow(nearest.vector.magnitude * 0.8, -1);
+      if (nearest.vector.magnitude < 160) {
+        g.move(-1 * Math.cos(nearest.vector.bearing) * force * td,
+               -1 * Math.sin(nearest.vector.bearing) * force * td);
+      }
+
       if(g.isCollidingAny()) {
-        rels = g.relationToSiblings();
-        
+
       } else {
 
       }
     }
 
-    updateLines();
+    //updateLines();
 
   }, layer);
   anim.start();

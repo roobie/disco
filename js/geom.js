@@ -4,13 +4,13 @@
   var module = {},
       twod;
 
-  module.Ratio = function Ratio(y, x) {
-    this.y = y;
+  module.Ratio = function Ratio(x, y) {
     this.x = x;
+    this.y = y;
   };
 
   module.Ratio.prototype.valueOf = function() {
-    return this.y / this.x;
+    return this.x / this.y;
   };
 
   twod = module.twod = {};
@@ -35,9 +35,7 @@
     var b = twod.bearing(point1, point2);
     return {
       magnitude: twod.distance(point1, point2),
-      bearing: b,
-      ratio: twod.angleToRatio(b),
-      inverseBearing: twod.inverseAngle(b)
+      bearing: b
     };
   };
 
@@ -58,7 +56,8 @@
 
     ];*/
 
-    return new module.Ratio(sin / tan, tan * cos);
+    //return new module.Ratio(sin / tan, tan * cos);
+    return new module.Ratio(cos, sin);
   };
 
   twod.rect = {};
