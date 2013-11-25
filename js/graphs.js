@@ -7,18 +7,7 @@
     return "#" + (Math.floor(r() * 16777215)).toString(16);
   };
 
-  var data = [
-    { title: "Test One" },
-    { title: "Test One" },
-    { title: "Test One" },
-    { title: "Test One" },
-    { title: "Test One" },
-    { title: "Test One" },
-    { title: "Test One" },
-    { title: "Test One" },
-    { title: "Test One" },
-    { title: "Test One" },
-  ];
+  var data = new Array(30);
 
   var stage = new Kinetic.Stage({
     draggable: true,
@@ -49,6 +38,7 @@
     var rect = new Kinetic.Rect({
       x: 0,
       y: 0,
+      raduis: grpDim.h,
       width: grp.getWidth(),
       height: grp.getHeight(),
       fill: randomColor()
@@ -101,19 +91,30 @@
   });
 
   var lines = _.map(mainGroups, function(grp) {
-    var line = new Kinetic.Line({
+    var line1 = new Kinetic.Line({
       points: [
         grp.getWidth() / 2, grp.getHeight() / 2,
         100, 100
       ],
-      stroke: "cadetblue",
-      strokeWidth: 4
+      stroke: randomColor(),
+      strokeWidth: 5
     });
 
-    grp.add(line);
-    line.from = grp;
+    var line2 = new Kinetic.Line({
+      points: [
+        grp.getWidth() / 2, grp.getHeight() / 2,
+        100, 100
+      ],
+      stroke: randomColor(),
+      strokeWidth: 5
+    });
 
-    return line;
+    grp.add(line1);
+    grp.add(line2);
+    line1.from = grp;
+    line2.from = grp;
+
+    return [line1, line2];
   });
 
   var lines2 = _.map(mainGroups, function(grp) {
@@ -133,16 +134,23 @@
 
   var updateLines = function() {
     _.each(lines, function(line) {
-      var grp = line.getParent();
-      var nearest = grp.relationToSiblings()[0].node;
+      var grp = line[0].getParent();
+      var n = grp.relationToSiblings();
+      var nearest1 = n[0].node;
+      var nearest2 = n[1].node;
 
-      line.setPoints([
+      line[0].setPoints([
         grp.getWidth() / 2, grp.getHeight() / 2,
-        nearest.getX() - grp.getX() + nearest.getWidth() / 2, nearest.getY() - grp.getY() + nearest.getHeight() / 2
+        nearest1.getX() - grp.getX() + nearest1.getWidth() / 2, nearest1.getY() - grp.getY() + nearest1.getHeight() / 2
       ]);
+      line[1].setPoints([
+        grp.getWidth() / 2, grp.getHeight() / 2,
+        nearest2.getX() - grp.getX() + nearest2.getWidth() / 2, nearest2.getY() - grp.getY() + nearest2.getHeight() / 2
+      ])
     });
 
     _.each(lines2, function(line2) {
+      return;
       var grp = line2.getParent();
       var nearestData = grp.relationToSiblings()[0];
       var nearest = nearestData.node;
@@ -191,7 +199,7 @@
       }
     }
 
-    //updateLines();
+    updateLines();
 
   }, layer);
   anim.start();
